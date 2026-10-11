@@ -1,70 +1,554 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EcoNewton | IGCSE Economics</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{colors:{eco:'#2f8f68',ecoDark:'#216b4e'}}}}</script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            eco: '#2f8f68',
+            ecoDark: '#216b4e',
+            ecoLight: '#ebf8f1'
+          }
+        }
+      }
+    };
+  </script>
   <style>
-    body{font-family:Inter,ui-sans-serif,system-ui,sans-serif}.top{background:linear-gradient(#dfe3e1,#eef0ef)}
-    .card{box-shadow:0 10px 30px rgba(31,41,55,.07)}.section{display:none}.section.active{display:block}
-    .modal{display:none}.modal.open{display:flex}.drawer{transform:translateX(-105%);transition:.2s}.drawer.open{transform:translateX(0)}
-    .option.correct{background:#ecfdf5;border-color:#2f8f68}.option.wrong{background:#fef2f2;border-color:#ef4444}
-    @keyframes float{50%{transform:translateY(-7px)}}.float{animation:float 3s ease-in-out infinite}
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .modal { display: none; }
+    .modal.open { display: flex; }
+    .drawer { transform: translateX(-105%); transition: transform .2s ease; }
+    .drawer.open { transform: translateX(0); }
+    .option.correct { background: #ecfdf5; border-color: #2f8f68; }
+    .option.wrong { background: #fef2f2; border-color: #ef4444; }
+    .glass { background: rgba(255,255,255,0.72); backdrop-filter: blur(12px); }
+    @keyframes float { 50% { transform: translateY(-7px); } }
+    .float { animation: float 3s ease-in-out infinite; }
   </style>
 </head>
-<body class="bg-white text-gray-800">
-<div class="top h-3"></div>
-<div id="toast" class="fixed right-5 top-5 z-[100] hidden rounded-xl bg-gray-900 px-5 py-3 text-sm font-bold text-white shadow-xl"></div>
-<header class="sticky top-0 z-40 border-b bg-white/95 backdrop-blur lg:hidden"><div class="flex items-center justify-between p-4"><button onclick="toggleDrawer()" class="text-xl">☰</button><b>Eco<span class="text-eco">Newton</span></b><button onclick="openQuiz()" class="rounded-lg bg-eco px-3 py-2 text-xs font-bold text-white">Quiz</button></div></header>
-<div class="flex min-h-screen">
-<aside id="drawer" class="drawer fixed inset-y-0 left-0 z-50 w-72 border-r bg-white p-5 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0">
-  <div class="mb-8 flex items-center gap-3"><div class="grid h-12 w-12 place-items-center rounded-2xl bg-eco text-2xl text-white">£</div><div><b class="text-lg">Eco<span class="text-eco">Newton</span></b><div class="text-xs text-gray-400">IGCSE Economics</div></div></div>
-  <nav class="space-y-1">
-    <button data-page="dashboard" class="nav w-full rounded-xl bg-emerald-50 px-4 py-3 text-left font-bold text-eco">⌂ &nbsp; Dashboard</button>
-    <button data-page="curriculum" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-gray-600">▦ &nbsp; Curriculum</button>
-    <button data-page="progress" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-gray-600">◔ &nbsp; Progress</button>
-    <button data-page="tasks" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-gray-600">✓ &nbsp; To-do list</button>
-    <button data-page="quiz" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-gray-600">? &nbsp; Pop quizzes</button>
-    <button data-page="chat" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-gray-600">✦ &nbsp; Newton chatbot</button>
-  </nav>
-  <div class="mt-8 rounded-2xl bg-emerald-50 p-4"><b class="text-xs uppercase text-eco">Newton's tip</b><p class="mt-2 text-sm leading-6 text-gray-600">Opportunity cost is the next best alternative forgone when a choice is made.</p></div>
-</aside>
-<main class="min-w-0 flex-1"><div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-10">
-<section id="dashboard" class="section active">
-  <div class="overflow-hidden rounded-3xl bg-gray-50 p-7 sm:p-10"><div class="grid items-center gap-8 lg:grid-cols-[1fr_230px]"><div><span class="rounded-full bg-white px-3 py-1 text-xs font-black text-eco">IGCSE O-LEVEL ECONOMICS</span><h1 class="mt-4 text-4xl font-black leading-tight sm:text-5xl">Welcome back, economist. <span class="text-eco">Let's make sense of the economy.</span></h1><p class="mt-4 max-w-2xl text-gray-500">Your Economics command centre for curriculum, deadlines, revision, quizzes and quick help.</p><div class="mt-6 flex flex-wrap gap-3"><button onclick="show('curriculum')" class="rounded-xl bg-eco px-5 py-3 font-black text-white">Continue learning →</button><button onclick="openQuiz()" class="rounded-xl border bg-white px-5 py-3 font-black">Take a pop quiz</button></div></div><div class="float relative mx-auto h-52 w-44"><div class="absolute left-4 top-3 text-2xl">🍎</div><div class="absolute bottom-0 left-1/2 h-36 w-28 -translate-x-1/2 rounded-t-[4rem] bg-gray-700"><div class="absolute left-1/2 top-[-52px] h-20 w-20 -translate-x-1/2 rounded-full bg-[#f2c7a5]"><i class="absolute left-3 top-8 h-2 w-2 rounded-full bg-gray-800"></i><i class="absolute right-3 top-8 h-2 w-2 rounded-full bg-gray-800"></i><i class="absolute left-1/2 top-11 h-1 w-6 -translate-x-1/2 rounded bg-gray-700"></i><div class="absolute -top-5 left-[-3px] h-7 w-28 rounded-full bg-gray-200"></div></div></div><div class="absolute bottom-1 left-1/2 h-7 w-28 -translate-x-1/2 rounded bg-eco"></div></div></div></div>
-  <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><div class="card rounded-2xl border bg-white p-5"><span class="text-sm text-gray-400">Course progress</span><b id="coursePct" class="mt-2 block text-3xl">0%</b><div class="mt-3 h-2 rounded-full bg-gray-100"><div id="courseBar" class="h-full rounded-full bg-eco" style="width:0%"></div></div></div><div class="card rounded-2xl border bg-white p-5"><span class="text-sm text-gray-400">Tasks left</span><b id="taskCount" class="mt-2 block text-3xl">0</b><small class="text-gray-400">unfinished</small></div><div class="card rounded-2xl border bg-white p-5"><span class="text-sm text-gray-400">Next exam</span><b class="mt-2 block text-lg">Economics Mock</b><small class="text-gray-400">12 days to go</small></div><div class="card rounded-2xl border bg-white p-5"><span class="text-sm text-gray-400">Quiz streak</span><b id="streak" class="mt-2 block text-3xl">0</b><small class="text-gray-400">correct answers</small></div></div>
-  <div class="mt-6 grid gap-6 xl:grid-cols-3"><div class="card rounded-2xl bg-white p-6 xl:col-span-2"><h2 class="text-xl font-black">Notifications</h2><div class="mt-5 space-y-3"><div class="rounded-xl bg-amber-50 p-4">📝 <b>Assignment due tomorrow</b><p class="ml-6 text-sm text-gray-500">Demand & supply worksheet.</p></div><div class="rounded-xl bg-blue-50 p-4">📅 <b>Course reminder</b><p class="ml-6 text-sm text-gray-500">Next lesson: Government intervention.</p></div><div class="rounded-xl bg-emerald-50 p-4">🎓 <b>Exam reminder</b><p class="ml-6 text-sm text-gray-500">Economics Mock Exam — 12 days remaining.</p></div></div></div><div class="card rounded-2xl bg-eco p-6 text-white"><small class="font-black uppercase text-emerald-100">Pop-up trivia</small><p id="trivia" class="mt-5 text-xl font-black leading-8"></p><button onclick="nextTrivia()" class="mt-6 rounded-xl bg-white/15 px-4 py-2 font-bold">Another trivia ↗</button></div></div>
-  <div class="mt-6 grid gap-6 lg:grid-cols-2"><div class="card rounded-2xl bg-white p-6"><h2 class="text-xl font-black">Quick university tips 🎓</h2><div class="mt-4 space-y-3"><p class="rounded-xl bg-gray-50 p-4 text-sm"><b>Build evidence, not just grades.</b><br>Keep records of projects, reading, competitions and activities relevant to your interests.</p><p class="rounded-xl bg-gray-50 p-4 text-sm"><b>Research requirements early.</b><br>Requirements vary by course and university, so check official university pages.</p></div></div><div class="card rounded-2xl bg-white p-6"><h2 class="text-xl font-black">Newton's daily challenge 🍎</h2><p id="challenge" class="mt-4 rounded-xl bg-emerald-50 p-4 text-sm leading-6"></p><button onclick="finishChallenge()" class="mt-4 rounded-xl bg-gray-900 px-4 py-2 text-sm font-bold text-white">Mark complete</button></div></div>
-</section>
-<section id="curriculum" class="section"><h1 class="text-3xl font-black">IGCSE Economics Curriculum</h1><p class="mt-2 text-gray-500">Major areas for the prototype.</p><div id="topics" class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div></section>
-<section id="progress" class="section"><h1 class="text-3xl font-black">Progress tracker</h1><p class="mt-2 text-gray-500">Track your progress across Economics topics.</p><div class="card mt-6 rounded-2xl bg-white p-6"><div class="flex justify-between"><b id="overall" class="text-4xl">0%</b><span><span id="done">0</span>/<span id="total">0</span> topics complete</span></div><div class="mt-5 h-4 rounded-full bg-gray-100"><div id="overallBar" class="h-full rounded-full bg-eco"></div></div><div id="progressTopics" class="mt-8 space-y-5"></div></div></section>
-<section id="tasks" class="section"><div class="flex justify-between gap-4"><div><h1 class="text-3xl font-black">To-do list</h1><p class="mt-2 text-gray-500">Assignments and revision tasks.</p></div><button onclick="addTask()" class="rounded-xl bg-eco px-4 py-3 font-black text-white">+ Add task</button></div><div id="taskList" class="mt-6 space-y-3"></div></section>
-<section id="quiz" class="section"><h1 class="text-3xl font-black">Pop quizzes</h1><p class="mt-2 text-gray-500">Only two sample questions are included in this prototype.</p><div class="mt-6 grid gap-4 md:grid-cols-2"><div class="card rounded-2xl bg-white p-6"><small class="font-black text-eco">SAMPLE QUIZ 01</small><h2 class="mt-3 text-xl font-black">Opportunity cost</h2><p class="mt-2 text-sm text-gray-500">One four-option Economics question.</p><button onclick="openQuiz(0)" class="mt-5 font-black text-eco">Try it →</button></div><div class="card rounded-2xl bg-white p-6"><small class="font-black text-eco">SAMPLE QUIZ 02</small><h2 class="mt-3 text-xl font-black">Demand</h2><p class="mt-2 text-sm text-gray-500">One four-option Economics question.</p><button onclick="openQuiz(1)" class="mt-5 font-black text-eco">Try it →</button></div></div></section>
-<section id="chat" class="section"><h1 class="text-3xl font-black">Ask Newton</h1><p class="mt-2 text-gray-500">Prototype chatbot for basic Economics help.</p><div class="card mt-6 rounded-2xl bg-white p-5"><div id="messages" class="h-96 overflow-y-auto rounded-xl bg-gray-50 p-4 space-y-3"></div><form id="chatForm" class="mt-4 flex gap-2"><input id="chatInput" class="min-w-0 flex-1 rounded-xl border px-4 py-3" placeholder="Ask: What is inflation?"><button class="rounded-xl bg-eco px-5 font-bold text-white">Send</button></form></div></section>
-</div></main></div>
-<div id="quizModal" class="modal fixed inset-0 z-[80] items-center justify-center bg-black/50 p-4"><div class="w-full max-w-2xl rounded-3xl bg-white p-7"><div class="flex justify-between"><b class="text-eco">POP QUIZ</b><button onclick="closeQuiz()" class="text-2xl text-gray-400">×</button></div><p id="quizQ" class="mt-7 text-2xl font-black leading-9"></p><div id="quizOptions" class="mt-6 grid gap-3"></div><div id="feedback" class="mt-5 hidden rounded-xl p-4 text-sm font-semibold"></div><button id="quizNext" onclick="nextQuiz()" class="mt-5 hidden w-full rounded-xl bg-eco py-3 font-bold text-white">Next</button></div></div>
-<script>
-const DEFAULT={tasks:[{id:1,t:'Review scarcity and opportunity cost',due:'Today',p:'High',done:false},{id:2,t:'Complete demand & supply worksheet',due:'Tomorrow',p:'Medium',done:false},{id:3,t:'Revise government intervention',due:'Sep 24',p:'High',done:false},{id:4,t:'Read international trade notes',due:'Sep 27',p:'Low',done:true}],topics:[['The basic economic problem','Scarcity, choice, opportunity cost and factors of production.',70],['The allocation of resources','Markets, demand, supply and the price mechanism.',55],['Microeconomic decision makers','Households, firms, production, costs and revenues.',35],['Government and the macroeconomy','Government objectives, policy and inflation.',25],['Economic development','Living standards, poverty and development indicators.',30],['International trade and globalisation','Specialisation, trade and exchange rates.',40]],streak:0,challenge:false};
-let S=JSON.parse(localStorage.getItem('ecoNewton'))||DEFAULT,ti=0,qi=0,answered=false;
-const TRIVIA=['The word economics comes from a Greek idea about managing a household.','The price mechanism can provide information and incentives to buyers and sellers.','Inflation means a sustained increase in the general price level.','Specialisation can increase productivity when resources are focused on suitable activities.'];
-const Q=[{q:'A student chooses to revise Economics instead of going to the cinema. What is the opportunity cost?',o:['The textbook cost','The cinema experience given up','The time spent revising','The Economics grade'],a:1,e:'Opportunity cost is the next best alternative forgone.'},{q:'Which change would most likely cause an extension in demand for a normal good?',o:['A fall in its price','A rise in its price','A fall in income','A rise in the price of a substitute'],a:0,e:'An extension in demand is a movement along the demand curve caused by a fall in the good’s own price.'}];
-function save(){localStorage.setItem('ecoNewton',JSON.stringify(S))} function toast(x){let e=document.getElementById('toast');e.textContent=x;e.classList.remove('hidden');clearTimeout(window.t);window.t=setTimeout(()=>e.classList.add('hidden'),2000)}
-function show(id){document.querySelectorAll('.section').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(e=>{let a=e.dataset.page===id;e.classList.toggle('bg-emerald-50',a);e.classList.toggle('text-eco',a);e.classList.toggle('text-gray-600',!a)});document.getElementById('drawer').classList.remove('open');render();scrollTo(0,0)}
-function toggleDrawer(){document.getElementById('drawer').classList.toggle('open')}
-function render(){let pct=Math.round(S.topics.reduce((a,x)=>a+x[2],0)/S.topics.length);document.getElementById('coursePct').textContent=pct+'%';document.getElementById('courseBar').style.width=pct+'%';document.getElementById('taskCount').textContent=S.tasks.filter(x=>!x.done).length;document.getElementById('streak').textContent=S.streak;document.getElementById('trivia').textContent=TRIVIA[ti];document.getElementById('challenge').textContent=S.challenge?'Challenge complete. Great work!':'Explain one difficult Economics concept aloud in 60 seconds without your notes.';document.getElementById('topics').innerHTML=S.topics.map((x,i)=>`<article class="card rounded-2xl border bg-white p-6"><div class="flex justify-between"><span class="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 font-black text-eco">${i+1}</span><b class="text-eco">${x[2]}%</b></div><h2 class="mt-5 text-lg font-black">${x[0]}</h2><p class="mt-2 text-sm leading-6 text-gray-500">${x[1]}</p><div class="mt-5 h-2 rounded-full bg-gray-100"><div class="h-full rounded-full bg-eco" style="width:${x[2]}%"></div></div><button onclick="advance(${i})" class="mt-5 text-sm font-black text-eco">${x[2]>=100?'Completed':'Mark progress'} →</button></article>`).join('');document.getElementById('progressTopics').innerHTML=S.topics.map(x=>`<div><div class="flex justify-between text-sm font-bold"><span>${x[0]}</span><span>${x[2]}%</span></div><div class="mt-2 h-3 rounded-full bg-gray-100"><div class="h-full rounded-full bg-eco" style="width:${x[2]}%"></div></div></div>`).join('');let done=S.topics.filter(x=>x[2]>=100).length;document.getElementById('overall').textContent=pct+'%';document.getElementById('overallBar').style.width=pct+'%';document.getElementById('done').textContent=done;document.getElementById('total').textContent=S.topics.length;document.getElementById('taskList').innerHTML=S.tasks.map(x=>`<div class="flex items-center gap-3 rounded-2xl border bg-white p-4 ${x.done?'opacity-50':''}"><button onclick="toggleTask(${x.id})" class="grid h-6 w-6 place-items-center rounded-full border-2 ${x.done?'border-eco bg-eco text-white':'border-gray-300'}">${x.done?'✓':''}</button><div class="flex-1"><b class="${x.done?'line-through':''}">${x.t}</b><div class="text-xs text-gray-400">Due ${x.due} · ${x.p} priority</div></div><button onclick="delTask(${x.id})" class="text-gray-300">×</button></div>`).join('')}
-function advance(i){S.topics[i][2]=Math.min(100,S.topics[i][2]+10);save();render();toast('Progress updated')}
-function toggleTask(id){let x=S.tasks.find(a=>a.id===id);x.done=!x.done;save();render();toast(x.done?'Task completed ✓':'Task reopened')}
-function delTask(id){S.tasks=S.tasks.filter(x=>x.id!==id);save();render();toast('Task removed')}
-function addTask(){let t=prompt('Task name:');if(!t)return;S.tasks.unshift({id:Date.now(),t,due:'Later',p:'Medium',done:false});save();render();toast('Task added')}
-function nextTrivia(){ti=(ti+1)%TRIVIA.length;render();toast('Trivia updated')}
-function finishChallenge(){S.challenge=true;save();render();toast('Challenge completed 🍎')}
-function openQuiz(i=0){qi=i;answered=false;let q=Q[qi];document.getElementById('quizQ').textContent=q.q;document.getElementById('feedback').className='mt-5 hidden rounded-xl p-4 text-sm font-semibold';document.getElementById('quizNext').classList.add('hidden');document.getElementById('quizOptions').innerHTML=q.o.map((x,i)=>`<button onclick="answer(${i})" class="option rounded-xl border-2 border-gray-100 p-4 text-left font-semibold">${String.fromCharCode(65+i)}. ${x}</button>`).join('');document.getElementById('quizModal').classList.add('open')}
-function closeQuiz(){document.getElementById('quizModal').classList.remove('open')}
-function answer(i){if(answered)return;answered=true;let q=Q[qi],b=[...document.querySelectorAll('.option')];b[i].classList.add(i===q.a?'correct':'wrong');b[q.a].classList.add('correct');let f=document.getElementById('feedback');f.classList.remove('hidden');f.className='mt-5 rounded-xl p-4 text-sm font-semibold '+(i===q.a?'bg-emerald-50 text-emerald-800':'bg-red-50 text-red-800');f.textContent=(i===q.a?'Correct! 🎉 ':'Not quite. ')+q.e;if(i===q.a)S.streak++;else S.streak=0;save();render();document.getElementById('quizNext').classList.remove('hidden')}
-function nextQuiz(){openQuiz((qi+1)%Q.length)}
-function bot(t){let x=t.toLowerCase();if(x.includes('opportunity cost'))return'Opportunity cost is the next best alternative forgone when a choice is made.';if(x.includes('demand')&&x.includes('supply'))return'Demand is the quantity consumers are willing and able to buy; supply is the quantity producers are willing and able to sell. Their interaction helps determine equilibrium.';if(x.includes('inflation'))return'Inflation is a sustained increase in the general price level.';if(x.includes('elasticity'))return'Elasticity measures how responsive one economic variable is to a change in another.';if(x.includes('revise'))return'Try active recall: explain a topic without notes, answer practice questions, then review mistakes.';return'I can help with opportunity cost, demand and supply, inflation, elasticity and revision strategies.'}
-function chat(w,t){let m=document.getElementById('messages');m.innerHTML+=`<div class="${w==='You'?'text-right':''}"><span class="inline-block max-w-[85%] rounded-2xl ${w==='You'?'bg-eco text-white':'bg-white border'} px-4 py-3 text-sm leading-6"><b class="block text-[10px] uppercase opacity-60">${w}</b>${t}</span></div>`;m.scrollTop=m.scrollHeight}
-document.querySelectorAll('.nav').forEach(x=>x.onclick=()=>show(x.dataset.page));document.getElementById('chatForm').onsubmit=e=>{e.preventDefault();let i=document.getElementById('chatInput'),t=i.value.trim();if(!t)return;chat('You',t);i.value='';setTimeout(()=>chat('Newton',bot(t)),150)};chat('Newton','Hello! 🍎 Ask me an Economics question or tell me what you forgot.');render();
-</script>
-</body></html>
+<body class="bg-slate-50 text-slate-800">
+  <div class="h-3 bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600"></div>
+
+  <div id="toast" class="fixed right-5 top-5 z-[100] hidden rounded-xl bg-slate-900 px-5 py-3 text-sm font-bold text-white shadow-xl"></div>
+
+  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur lg:hidden">
+    <div class="flex items-center justify-between p-4">
+      <div class="flex items-center gap-3">
+        <div class="grid h-10 w-10 place-items-center rounded-xl bg-eco text-xl font-black text-white">£</div>
+        <b class="text-lg">Eco<span class="text-eco">Newton</span></b>
+      </div>
+      <button onclick="toggleDrawer()" class="rounded-lg border border-slate-200 px-3 py-2 text-xl">☰</button>
+    </div>
+  </header>
+
+  <div class="flex min-h-screen">
+    <aside id="drawer" class="drawer fixed inset-y-0 left-0 z-50 w-72 border-r border-slate-200 bg-white p-5 shadow-xl lg:sticky lg:top-0 lg:h-screen lg:translate-x-0">
+      <div class="mb-8 flex items-center gap-3">
+        <div class="grid h-12 w-12 place-items-center rounded-2xl bg-eco text-2xl text-white">£</div>
+        <div>
+          <b class="text-lg">Eco<span class="text-eco">Newton</span></b>
+          <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Student OS</p>
+        </div>
+      </div>
+
+      <nav class="space-y-1">
+        <button data-page="dashboard" class="nav w-full rounded-xl bg-emerald-50 px-4 py-3 text-left font-bold text-eco">⌂  Dashboard</button>
+        <button data-page="curriculum" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-slate-600">▦  Curriculum</button>
+        <button data-page="progress" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-slate-600">◔  Progress</button>
+        <button data-page="tasks" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-slate-600">✓  To-do list</button>
+        <button data-page="quiz" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-slate-600">?  Pop quizzes</button>
+        <button data-page="chat" class="nav w-full rounded-xl px-4 py-3 text-left font-semibold text-slate-600">✦  Newton chatbot</button>
+      </nav>
+
+      <div class="mt-8 rounded-2xl bg-emerald-50 p-4">
+        <b class="text-xs uppercase tracking-[0.2em] text-eco">Newton's tip</b>
+        <p class="mt-2 text-sm leading-6 text-slate-600">Opportunity cost is the next best alternative forgone when a choice is made.</p>
+      </div>
+    </aside>
+
+    <main class="min-w-0 flex-1">
+      <div class="mx-auto max-w-7xl p-4 sm:p-6 lg:p-10">
+        <section id="dashboard" class="section active">
+          <div class="overflow-hidden rounded-[28px] bg-gradient-to-r from-emerald-50 via-white to-emerald-100 p-7 shadow-sm ring-1 ring-emerald-100 sm:p-10">
+            <div class="grid items-center gap-8 lg:grid-cols-[1fr_220px]">
+              <div>
+                <span class="rounded-full bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-eco shadow-sm ring-1 ring-emerald-100">IGCSE Economics</span>
+                <h1 class="mt-4 text-3xl font-black text-slate-900 sm:text-5xl">Build real economic thinking.</h1>
+                <p class="mt-3 max-w-xl text-base text-slate-600 sm:text-lg">Track revision, complete challenge tasks, and keep your understanding sharp with a focused study dashboard.</p>
+                <div class="mt-6 flex flex-wrap gap-3">
+                  <button onclick="show('quiz')" class="rounded-xl bg-eco px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200">Start quiz</button>
+                  <button onclick="show('tasks')" class="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700">View tasks</button>
+                </div>
+              </div>
+              <div class="float flex items-center justify-center">
+                <div class="grid h-52 w-52 place-items-center rounded-[32px] bg-eco text-7xl text-white shadow-2xl shadow-emerald-200">£</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span class="text-sm text-slate-400">Course progress</span>
+              <b id="coursePct" class="mt-3 block text-3xl font-black text-slate-900">0%</b>
+              <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
+                <div id="courseBar" class="h-full rounded-full bg-eco" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span class="text-sm text-slate-400">Completed tasks</span>
+              <b id="taskDonePct" class="mt-3 block text-3xl font-black text-slate-900">0%</b>
+              <p class="mt-2 text-sm text-slate-500">Stay consistent</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span class="text-sm text-slate-400">Study streak</span>
+              <b id="streak" class="mt-3 block text-3xl font-black text-slate-900">3 days</b>
+              <p class="mt-2 text-sm text-slate-500">Keep the rhythm</p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <span class="text-sm text-slate-400">Challenge badge</span>
+              <b id="challengeBadge" class="mt-3 block text-3xl font-black text-slate-900">Locked</b>
+              <p class="mt-2 text-sm text-slate-500">Complete a quiz</p>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-6 xl:grid-cols-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm xl:col-span-2">
+              <h2 class="text-xl font-black text-slate-900">Notifications</h2>
+              <div class="mt-5 space-y-3">
+                <div class="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+                  <b class="text-emerald-700">Revision reminder</b>
+                  <p class="mt-1 text-sm text-slate-600">Review supply and demand diagrams before your next class.</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <b class="text-slate-700">New resources</b>
+                  <p class="mt-1 text-sm text-slate-600">Try the latest challenge prompt on opportunity cost and scarcity.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-black text-slate-900">Economics fact</h2>
+              <p id="trivia" class="mt-4 text-base leading-7 text-slate-600">The price mechanism helps allocate resources through signals, incentives, and rationing.</p>
+              <button onclick="nextTrivia()" class="mt-5 rounded-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white">Next fact</button>
+            </div>
+          </div>
+
+          <div class="mt-6 grid gap-6 lg:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-black text-slate-900">Quick university tips 🎓</h2>
+              <div class="mt-4 space-y-3">
+                <p class="rounded-xl bg-emerald-50 p-3 text-sm text-slate-700">Use real examples in essays: transport, housing, and healthcare.</p>
+                <p class="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">Always define key terms before giving a long explanation.</p>
+                <p class="rounded-xl bg-slate-50 p-3 text-sm text-slate-700">Diagrams often earn extra marks when clearly labelled.</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-black text-slate-900">Study focus</h2>
+              <div class="mt-4 space-y-4">
+                <div>
+                  <div class="mb-2 flex justify-between text-sm font-semibold text-slate-600"><span>Scarcity</span><span>85%</span></div>
+                  <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full bg-eco" style="width:85%"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between text-sm font-semibold text-slate-600"><span>Demand & supply</span><span>72%</span></div>
+                  <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full bg-eco" style="width:72%"></div></div>
+                </div>
+                <div>
+                  <div class="mb-2 flex justify-between text-sm font-semibold text-slate-600"><span>Inflation</span><span>60%</span></div>
+                  <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full bg-eco" style="width:60%"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="curriculum" class="section">
+          <h1 class="text-3xl font-black text-slate-900">IGCSE Economics Curriculum</h1>
+          <p class="mt-2 text-slate-500">Major areas for the prototype.</p>
+          <div id="topics" class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+        </section>
+
+        <section id="progress" class="section">
+          <h1 class="text-3xl font-black text-slate-900">Progress tracker</h1>
+          <p class="mt-2 text-slate-500">Track your progress across Economics topics.</p>
+          <div class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div id="progressList" class="space-y-5"></div>
+          </div>
+        </section>
+
+        <section id="tasks" class="section">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 class="text-3xl font-black text-slate-900">To-do list</h1>
+              <p class="mt-2 text-slate-500">Assignments and revision tasks.</p>
+            </div>
+            <button onclick="addTask()" class="rounded-xl bg-eco px-4 py-3 text-sm font-bold text-white">+ Add task</button>
+          </div>
+          <div id="tasksList" class="mt-6 space-y-3"></div>
+        </section>
+
+        <section id="quiz" class="section">
+          <h1 class="text-3xl font-black text-slate-900">Pop quizzes</h1>
+          <p class="mt-2 text-slate-500">Two sample questions are included in this prototype.</p>
+          <div class="mt-6 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div class="mb-4 flex items-center justify-between">
+                <span class="rounded-full bg-emerald-50 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-eco">Quick check</span>
+                <span id="quizCounter" class="text-sm font-semibold text-slate-500">1 / 2</span>
+              </div>
+              <h2 id="quizQ" class="text-xl font-black text-slate-900">Question text</h2>
+              <div id="options" class="mt-5 space-y-3"></div>
+              <div id="feedback" class="mt-5 hidden rounded-xl p-4 text-sm font-semibold"></div>
+              <button id="nextQuizBtn" onclick="nextQuiz()" class="mt-5 hidden rounded-xl bg-eco px-4 py-3 text-sm font-bold text-white">Next question</button>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 class="text-xl font-black text-slate-900">Study hints</h2>
+              <ul class="mt-4 space-y-3 text-sm leading-7 text-slate-600">
+                <li>• Define the key term before explaining it.</li>
+                <li>• Use examples from daily life to support your answer.</li>
+                <li>• For diagrams, label all axes and curves clearly.</li>
+              </ul>
+              <button onclick="finishChallenge()" class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-eco">Finish challenge</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="chat" class="section">
+          <h1 class="text-3xl font-black text-slate-900">Ask Newton</h1>
+          <p class="mt-2 text-slate-500">Prototype chatbot for basic Economics help.</p>
+          <div class="card mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div id="messages" class="max-h-[420px] space-y-3 overflow-y-auto p-4">
+              <div class="text-left">
+                <span class="inline-block max-w-[85%] rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">Hi! Ask me about scarcity, demand, inflation, or opportunity cost.</span>
+              </div>
+            </div>
+            <form id="chatForm" class="border-t border-slate-200 p-4">
+              <div class="flex gap-3">
+                <input id="chatInput" type="text" placeholder="Ask a question..." class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none ring-0 focus:border-eco" />
+                <button class="rounded-xl bg-eco px-5 py-3 text-sm font-bold text-white">Send</button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="quizModal" class="modal fixed inset-0 z-[80] items-center justify-center bg-black/50 p-4">
+    <div class="w-full max-w-2xl rounded-3xl bg-white p-7 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <b class="text-xl font-black text-slate-900">Quiz complete</b>
+        <button onclick="closeQuiz()" class="text-2xl text-slate-400">×</button>
+      </div>
+      <p class="mt-4 text-slate-600">You have finished the challenge. Keep revising and try again to improve your score.</p>
+      <div class="mt-6 flex justify-end">
+        <button onclick="closeQuiz()" class="rounded-xl bg-eco px-5 py-3 text-sm font-bold text-white">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DEFAULT = {
+      tasks: [
+        { id: 1, t: 'Review scarcity and opportunity cost', due: 'Today', p: 'High', done: false },
+        { id: 2, t: 'Complete demand & supply worksheet', due: 'Tomorrow', p: 'Medium', done: false },
+        { id: 3, t: 'Revise inflation examples for class', due: 'Later', p: 'Medium', done: true },
+        { id: 4, t: 'Summarise a government policy example', due: 'Friday', p: 'Low', done: false }
+      ],
+      topics: [
+        ['Scarcity', 85, 'Resource choices and trade-offs'],
+        ['Demand & Supply', 72, 'Market forces and equilibrium'],
+        ['Inflation', 60, 'Causes and consequences'],
+        ['Government Intervention', 50, 'Tax, subsidy and regulation']
+      ],
+      challenge: false
+    };
+
+    const TRIVIA = [
+      'The word economics comes from a Greek idea about managing a household.',
+      'The price mechanism can provide information and incentives to buyers and sellers.',
+      'Inflation means a sustained rise in the general price level over time.',
+      'Opportunity cost is the value of the next best alternative forgone.'
+    ];
+
+    const Q = [
+      {
+        q: 'A student chooses to revise Economics instead of going to the cinema. What is the opportunity cost?',
+        o: ['The textbook cost', 'The cinema experience given up', 'The time spent revising', 'The school timetable'],
+        a: 1
+      },
+      {
+        q: 'Which statement best explains scarcity?',
+        o: ['Resources are unlimited', 'Wants are limited but resources are finite', 'All goods are free', 'Price always stays the same'],
+        a: 1
+      }
+    ];
+
+    let S = JSON.parse(localStorage.getItem('ecoNewton')) || DEFAULT;
+    let ti = 0;
+    let qi = 0;
+    let answered = false;
+
+    function save() {
+      localStorage.setItem('ecoNewton', JSON.stringify(S));
+    }
+
+    function toast(message) {
+      const e = document.getElementById('toast');
+      e.textContent = message;
+      e.classList.remove('hidden');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => e.classList.add('hidden'), 1800);
+    }
+
+    function show(id) {
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav').forEach(button => {
+        const isActive = button.dataset.page === id;
+        button.classList.toggle('bg-emerald-50', isActive);
+        button.classList.toggle('text-eco', isActive);
+        button.classList.toggle('font-bold', isActive);
+        button.classList.toggle('text-slate-600', !isActive);
+        button.classList.toggle('font-semibold', !isActive);
+      });
+      if (window.innerWidth < 1024) toggleDrawer(true);
+    }
+
+    function toggleDrawer(forceClose = false) {
+      const drawer = document.getElementById('drawer');
+      if (forceClose) {
+        drawer.classList.remove('open');
+        return;
+      }
+      drawer.classList.toggle('open');
+    }
+
+    function getCourseProgress() {
+      const total = S.topics.reduce((sum, topic) => sum + topic[1], 0);
+      return Math.round(total / S.topics.length);
+    }
+
+    function getTaskStats() {
+      const completed = S.tasks.filter(task => task.done).length;
+      const pct = S.tasks.length ? Math.round((completed / S.tasks.length) * 100) : 0;
+      return { completed, pct };
+    }
+
+    function renderDashboard() {
+      const pct = getCourseProgress();
+      const taskStats = getTaskStats();
+      document.getElementById('coursePct').textContent = pct + '%';
+      document.getElementById('courseBar').style.width = pct + '%';
+      document.getElementById('taskDonePct').textContent = taskStats.pct + '%';
+      document.getElementById('streak').textContent = taskStats.completed > 1 ? '3 days' : '2 days';
+      document.getElementById('challengeBadge').textContent = S.challenge ? 'Earned' : 'Locked';
+      document.getElementById('trivia').textContent = TRIVIA[ti];
+    }
+
+    function renderCurriculum() {
+      const container = document.getElementById('topics');
+      container.innerHTML = S.topics.map(([name, value, desc], index) => `
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex items-center justify-between">
+            <b class="text-lg font-black text-slate-900">${name}</b>
+            <button onclick="advance(${index})" class="rounded-lg bg-emerald-50 px-2 py-1 text-xs font-bold text-eco">+10%</button>
+          </div>
+          <p class="mt-2 text-sm text-slate-500">${desc}</p>
+          <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+            <div class="h-full rounded-full bg-eco" style="width:${value}%"></div>
+          </div>
+          <div class="mt-2 flex justify-between text-xs font-bold text-slate-500"><span>Progress</span><span>${value}%</span></div>
+        </div>
+      `).join('');
+    }
+
+    function renderProgress() {
+      const container = document.getElementById('progressList');
+      container.innerHTML = S.topics.map(([name, value, desc]) => `
+        <div>
+          <div class="mb-2 flex items-center justify-between">
+            <b class="text-base font-black text-slate-900">${name}</b>
+            <span class="text-sm font-bold text-eco">${value}%</span>
+          </div>
+          <div class="h-3 overflow-hidden rounded-full bg-slate-100">
+            <div class="h-full rounded-full bg-eco" style="width:${value}%"></div>
+          </div>
+          <p class="mt-2 text-sm text-slate-500">${desc}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('tasksList');
+      container.innerHTML = S.tasks.map(task => `
+        <div class="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" ${task.done ? 'checked' : ''} onchange="toggleTask(${task.id})" class="h-5 w-5 rounded border-slate-300 text-eco focus:ring-eco" />
+            <div>
+              <p class="font-bold ${task.done ? 'text-slate-400 line-through' : 'text-slate-800'}">${task.t}</p>
+              <div class="mt-1 flex gap-2 text-xs text-slate-500">
+                <span>${task.due}</span>
+                <span>•</span>
+                <span class="font-semibold ${task.p === 'High' ? 'text-red-500' : task.p === 'Medium' ? 'text-amber-500' : 'text-emerald-500'}">${task.p}</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="delTask(${task.id})" class="rounded-lg bg-red-50 px-2 py-1 text-xs font-bold text-red-500">Delete</button>
+        </div>
+      `).join('');
+    }
+
+    function renderQuiz() {
+      const q = Q[qi];
+      document.getElementById('quizCounter').textContent = `${qi + 1} / ${Q.length}`;
+      document.getElementById('quizQ').textContent = q.q;
+      const options = document.getElementById('options');
+      options.innerHTML = q.o.map((option, index) => `
+        <button class="option w-full rounded-xl border border-slate-200 bg-slate-50 p-4 text-left text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50" data-index="${index}" onclick="answer(${index})">
+          ${option}
+        </button>
+      `).join('');
+      document.getElementById('feedback').className = 'mt-5 hidden rounded-xl p-4 text-sm font-semibold';
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('nextQuizBtn').classList.add('hidden');
+      answered = false;
+    }
+
+    function render() {
+      renderDashboard();
+      renderCurriculum();
+      renderProgress();
+      renderTasks();
+      renderQuiz();
+    }
+
+    function advance(index) {
+      S.topics[index][1] = Math.min(100, S.topics[index][1] + 10);
+      save();
+      render();
+      toast('Progress updated');
+    }
+
+    function toggleTask(id) {
+      const task = S.tasks.find(item => item.id === id);
+      if (!task) return;
+      task.done = !task.done;
+      save();
+      render();
+      toast(task.done ? 'Task completed ✓' : 'Task reopened');
+    }
+
+    function delTask(id) {
+      S.tasks = S.tasks.filter(task => task.id !== id);
+      save();
+      render();
+      toast('Task removed');
+    }
+
+    function addTask() {
+      const taskName = prompt('Task name:');
+      if (!taskName) return;
+      S.tasks.unshift({ id: Date.now(), t: taskName, due: 'Later', p: 'Medium', done: false });
+      save();
+      render();
+      toast('Task added');
+    }
+
+    function nextTrivia() {
+      ti = (ti + 1) % TRIVIA.length;
+      renderDashboard();
+      toast('Trivia updated');
+    }
+
+    function finishChallenge() {
+      S.challenge = true;
+      save();
+      renderDashboard();
+      openQuizModal();
+      toast('Challenge completed 🍎');
+    }
+
+    function openQuizModal() {
+      document.getElementById('quizModal').classList.add('open');
+    }
+
+    function closeQuiz() {
+      document.getElementById('quizModal').classList.remove('open');
+    }
+
+    function answer(index) {
+      if (answered) return;
+      answered = true;
+      const q = Q[qi];
+      const buttons = document.querySelectorAll('.option');
+      buttons.forEach((button, i) => {
+        const correct = i === q.a;
+        const selected = i === index;
+        button.classList.toggle('correct', correct);
+        button.classList.toggle('wrong', selected && !correct);
+        button.disabled = true;
+      });
+
+      const feedback = document.getElementById('feedback');
+      const isCorrect = index === q.a;
+      feedback.className = `mt-5 rounded-xl p-4 text-sm font-semibold ${isCorrect ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`;
+      feedback.textContent = isCorrect ? 'Correct — well done!' : `Not quite. The correct answer is: ${q.o[q.a]}`;
+      feedback.classList.remove('hidden');
+      document.getElementById('nextQuizBtn').classList.remove('hidden');
+    }
+
+    function nextQuiz() {
+      qi = (qi + 1) % Q.length;
+      renderQuiz();
+    }
+
+    function botReply(text) {
+      const x = text.toLowerCase();
+      if (x.includes('opportunity cost')) return 'Opportunity cost is the next best alternative forgone when a choice is made.';
+      if (x.includes('demand') && x.includes('supply')) return 'Demand shows how much consumers want to buy at different prices, while supply shows how much producers want to sell.';
+      if (x.includes('inflation')) return 'Inflation is a sustained rise in the general price level, reducing purchasing power over time.';
+      if (x.includes('scarcity')) return 'Scarcity occurs because wants are unlimited while resources are limited.';
+      if (x.includes('market')) return 'A market is where buyers and sellers meet to exchange goods and services.';
+      return 'That is a good question. In Economics, always define the key term and link it to a clear example from real life.';
+    }
+
+    function chat(who, text) {
+      const messages = document.getElementById('messages');
+      const bubble = `
+        <div class="${who === 'You' ? 'text-right' : 'text-left'}">
+          <span class="inline-block max-w-[85%] rounded-2xl ${who === 'You' ? 'bg-eco text-white' : 'bg-slate-100 text-slate-700'} px-4 py-3 text-sm">
+            ${text}
+          </span>
+        </div>
+      `;
+      messages.insertAdjacentHTML('beforeend', bubble);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    document.querySelectorAll('.nav').forEach(button => {
+      button.onclick = () => show(button.dataset.page);
+    });
+
+    document.getElementById('chatForm').onsubmit = (event) => {
+      event.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      chat('You', text);
+      input.value = '';
+      setTimeout(() => chat('Newton', botReply(text)), 250);
+    };
+
+    render();
+  </script>
+</body>
+</html>
